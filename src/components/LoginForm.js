@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import {React, useState,useEffect } from "react";
 import "./LoginForm.css";
 import emailjs from "emailjs-com";
+import axios from 'axios';
+import { Redirect } from 'react-router-dom';
+import { useHistory } from 'react-router';
 //import FontAwesomeIcon from ' @fortawesome/react-fontawesome';
 /*import {
     faFacebook,
@@ -11,19 +14,64 @@ import emailjs from "emailjs-com";
 
 const LoginForm = () => {
   const [name, setName] = useState("");
+  const [user_email2, setEmail2] = useState('')
   const [user_email, setEmail] = useState("");
   const [passw, setPassw] = useState("");
+  const [passw2, setPassw2] = useState("");
   const [passwConf, setPasswConf] = useState("");
   const [confirm, setConfirm] = useState(true);
   const [veriCode, setVeriCode] = useState("");
   const [code, setCode] = useState("code");
-  //const history = useHistory()
+  const history = useHistory()
   const [addclass, setaddclass] = useState("");
+  const [isAuth, setIsAuth] = useState(true)
+  const [urlPage, setUrlPage] = useState('')
+  const [checkPass, setCheckPass] = useState('')
+  //const [id,serId] = useState('');
 
   var result = "";
   var characters =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   var charactersLength = characters.length;
+  
+  useEffect(() => {
+    axios.get('http://localhost:4000/user/check2/' + user_email).then((res) => {
+      // eslint-disable-next-line
+
+      setUrlPage(``)
+      // eslint-disable-next-line
+      //setId(res.data._id)
+    })
+    //window.alert(id)
+  }, [user_email])
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:4000/user/check/' + user_email + '/' + passw)
+      .then((res) => {
+        setCheckPass(res.data)
+
+        //window.alert(res.data)
+      })
+  }, [passw, user_email])
+
+  const Submit = () => {
+    //window.alert(checkPass)
+
+    if (checkPass === 'done') {
+      setIsAuth(false)
+    } else {
+      window.alert('email and password did not match')
+    }
+  }
+  if (!isAuth) {
+    return <Redirect to={urlPage} />
+  }
+
+
+
+
+
 
   const verification = (a) => {
     if (!a) {
@@ -61,15 +109,15 @@ const LoginForm = () => {
                 />
                 <input
                   type="email"
-                  value={user_email}
+                  value={user_email2}
                   placeholder="EMAIL"
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => setEmail2(e.target.value)}
                 />
                 <input
                   type="password"
-                  value={passw}
+                  value={passw2}
                   placeholder="PASSWORD"
-                  onChange={(e) => setPassw(e.target.value)}
+                  onChange={(e) => setPassw2(e.target.value)}
                 />
                 <input
                   type="password"
@@ -81,7 +129,7 @@ const LoginForm = () => {
               </form>
             </div>
             <div className=" form-container sign-in-container">
-              <form>
+              <form onSubmit={Submit}>
                 <h1>SIGN IN</h1>
                 <input type="text" placeholder="NAME" />
                 <input type="password" placeholder="PASSWORD" />
@@ -115,7 +163,7 @@ const LoginForm = () => {
   };
 
   function sendEmail(e) {
-    if (passw === passwConf) {
+    if (passw2 === passwConf) {
       if (confirm) {
         
         for (var i = 0; i < 8; i++) {
@@ -126,7 +174,7 @@ const LoginForm = () => {
         setCode(result);
         const templateParams = {
           name: name,
-          user_email: user_email,
+          user_email: user_email2,
           result: result,
         };
 
@@ -151,10 +199,15 @@ const LoginForm = () => {
       if (code === veriCode) {
         const obj = {
           name: name,
-          email: user_email,
-          password: passw,
+          email: user_email2,
+          password: passw2,
           //admin_id: this.state.admin_id,
-        };
+        }
+        axios.post('http://localhost:4000/user/add', obj).then((res) => {
+          window.alert(res.data)
+        })
+        setConfirm(true)
+        //history.push('/signin')
         /*setConfirm(true)
         history.push('/login')*/
       } else {

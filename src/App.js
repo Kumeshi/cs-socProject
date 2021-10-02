@@ -1,11 +1,28 @@
-import React from 'react';
-import LoginForm from './components/LoginForm';
+import { useState } from 'react'
+import LoginForm from './components/LoginForm.js';
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
+
+
+
+
+
+
 
 function App(){
-  return(
-    <LoginForm></LoginForm>
-  );
+  //const [user] = useState('')
+  return (
+    <BrowserRouter>
+      <div className='App'>
+        <Switch>
+          
+           <Route path='/' component={LoginForm} />
+           <Route path='/signin' component={LoginForm} /> 
+          </Switch>
+      </div>
+    </BrowserRouter>
+  )
 }
+
 
 
 /*function App() {
