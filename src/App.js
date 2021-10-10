@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import React  from 'react';
 import LoginForm from './components/LoginForm.js';
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 
 
@@ -8,7 +8,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 
 
-function App(){
+/*function App(){
   //const [user] = useState('')
   return (
     <BrowserRouter>
@@ -21,8 +21,14 @@ function App(){
       </div>
     </BrowserRouter>
   )
+}*/
+ function App(){
+   return (
+   <Router>
+     <Route path = "/registration" exact render = {(props) => <LoginForm/>} />{""}
+   </Router>
+   );
 }
-
 
 
 /*function App() {
