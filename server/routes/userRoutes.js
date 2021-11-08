@@ -21,7 +21,8 @@ userRoutes.post('/add', async (req, res) => {
   } else {
     res.json('already registered')
   }
-})
+});
+
 
 userRoutes.get('/check/:email/:password', async (req, res) => {
   const findId = await User.findOne({
@@ -37,7 +38,7 @@ userRoutes.get('/check/:email/:password', async (req, res) => {
   } else {
     res.send('incorrect')
   }
-})
+});
 
 userRoutes.get('/check2/:email', async (req, res) => {
   const findId = await User.findOne({
@@ -46,6 +47,25 @@ userRoutes.get('/check2/:email', async (req, res) => {
   })
 
   res.send(findId)
-})
+});
+
+userRoutes.put('/update/:id',async(req,res)=>{
+  const update =await User.findOneAndUpdate({ _id: req.params.id },
+        { $set: req.body },
+    )
+    res.send(update)
+});
+
+userRoutes.delete('/delete/:id',async(req,res)=>{
+  const user =  await User.findOne({ _id: req.params.id})
+const dele = await User.findByIdAndDelete(
+  { _id: req.params.id})
+  console.log(user)
+  res.send(user?"success":"failed");
+});
+userRoutes.get('/userdetails', async (req, res) => {
+  const findId = await User.find()
+    res.send(findId)
+});
 
 module.exports = userRoutes

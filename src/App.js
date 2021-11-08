@@ -1,34 +1,37 @@
 import React  from 'react';
 import LoginForm from './components/LoginForm.js';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter , Route,Switch } from 'react-router-dom';
+import adminPage from './components/adminPage.js';
+import axios from 'axios';
+import { render } from '@testing-library/react';
 
 
 
 
 
-
-
-/*function App(){
+function App(){
   //const [user] = useState('')
   return (
     <BrowserRouter>
       <div className='App'>
         <Switch>
           
-           <Route path='/' component={LoginForm} />
-           <Route path='/signin' component={LoginForm} /> 
+           <Route path='/registration' component={LoginForm} />
+           <Route path='/admin' component={adminPage} /> 
           </Switch>
       </div>
     </BrowserRouter>
   )
-}*/
- function App(){
+  
+ /*function App(){
    return (
    <Router>
-     <Route path = "/registration" exact render = {(props) => <LoginForm/>} />{""}
+     <Route path = "/registration" exact render = {(props) => <LoginForm/>} />
+     <Route path = "/admin"  render = {(props) => <adminPage/>} />
    </Router>
+
    );
-}
+}*/
 
 
 /*function App() {
@@ -72,4 +75,12 @@ const Logout = () =>{
   );
 }*/
 
+
+
+
+
+
+
+
+}
 export default App;
