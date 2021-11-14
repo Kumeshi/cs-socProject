@@ -16,9 +16,10 @@ import UserTable from './userTable'
 </thead>*/
 const AdminPage =()=>{
   const [data, setdata] = useState([])
-
- 
-
+  const [edit,setedit]= useState(false)
+  const [id,setid]=useState("")
+  const[name,setname]=useState("")
+  const[email,setemail]=useState("")
 
   useEffect(() => {
     axios
@@ -32,59 +33,50 @@ const AdminPage =()=>{
       })
 
   },[])
+  const submit =(a)=>{
+    const obj={
+      name:name,
+      email:email
+    }
+    axios
+    .put('http://localhost:4000/user/update/'+a,obj )
+    .then((res) => {
+     window.alert(res.data)
+    })
+    .catch(function (err) {
+      console.log(err)
+    })
+
+  }
+   
 const RowUsers = () => {
     return data.map(function(object, index){
       console.log(object);
-      return <UserTable obj={object} key={index}/>
+      return <UserTable obj={object} key={index} id={(id)=>setid(id)} edit={(a)=>setedit(a)}/>
       
     })};
     
-
-  /* return (
-    <div>
-          <p>Details</p>
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">id</th>
-                <th scope="col">name</th>
-                <th scope="col">email</th>
-                <th scope="col">action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {RowUsers}
-              
-                <tr>
-                  <th scope ="row">{index+1}</th>
-                  <td>{object.name}</td>
-                  <td>{object.email}</td>
-                  <td>
-                    <a classname ="btn btn-warning" href="#">
-                      <i classname="fas fa-edit"></i>&nbsp;Edit
-                      </a>
-                      <a classname ="btn btn-danger" href="#">
-                      <i classname="fas fa-trash-alt"></i>&nbsp;Delete
-                      </a>
-                  </td>
-                  
-                  
-                </tr>
-           </tbody>
-          </table>
-      </div>
-    )
-              
-  }*/
-  
-
-
-  //return <>{row()}</>
- /* function adminPage(){
-    return <div>hello</div>
-  }*/
+      
   return(
+    <>
+    {edit?
+    <div className='py-5 px-4' style={{ background: 'rgba(0, 0, 0, 0.5)', position: "fixed", zIndex: 2000, width: '100%', height: '100vh', overflowY: 'scroll' }}>
+    <div className="px-5 d-flex justify-content-end">
+      <button type="button" className="btn btn-dark" style={{ border: '1px solid black', borderRadius: '10px' }} onClick={() => setedit(false)}>Close</button>
+    </div>
+    <div className="d-flex justify-content-center p-5" style={{ width: '60%', margin: 'auto', background: 'white', border: '3px solid black', borderRadius: '10px' }}>
+    <div className ="update-container">
+          <form onSubmit={()=>submit(id)}>
+                
+                <input type="text" placeholder="NAME" value={name} onChange={(e)=>setname(e.target.value)} />
+                <input type="email" placeholder="EMAIL" value={email} onChange={(e)=>setemail(e.target.value)} />
+                <button type="submit">UPDATE AND SAVE</button>
+                </form>
+        </div>
+    </div>
+
+  </div>
+    :
     <table className='table table-striped mt-5'>
             <thead>
                <tr>
@@ -95,6 +87,8 @@ const RowUsers = () => {
             </thead>
             <tbody>{RowUsers()}</tbody>
           </table>
+         }
+          </>
   )
 }
  export default AdminPage

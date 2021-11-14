@@ -4,6 +4,10 @@ import emailjs from "emailjs-com";
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import { useHistory } from 'react-router';
+
+import { History } from "history";
+
+
 //import FontAwesomeIcon from ' @fortawesome/react-fontawesome';
 /*import {
     faFacebook,
@@ -28,6 +32,9 @@ const LoginForm = () => {
   const [urlPage, setUrlPage] = useState('')
   const [checkPass, setCheckPass] = useState('')
   //const [id,serId] = useState('');
+  const [admin,setadmin]=useState(false);
+  //const express = require('express');
+  //const app = express(); 
 
   var result = "";
   var characters =
@@ -37,7 +44,8 @@ const LoginForm = () => {
   useEffect(() => {
     axios.get('http://localhost:4000/user/check2/' + user_email).then((res) => {
       // eslint-disable-next-line
-
+     // res.data.role==1?setadmin(true):setadmin(false)
+     // console.log(res.data)
       setUrlPage(``)
       // eslint-disable-next-line
       //setId(res.data._id)
@@ -50,6 +58,7 @@ const LoginForm = () => {
       .get('http://localhost:4000/user/check/' + user_email + '/' + passw)
       .then((res) => {
         setCheckPass(res.data)
+        console.log(res.data)
 
         //window.alert(res.data)
       })
@@ -66,8 +75,9 @@ const LoginForm = () => {
   }
   if (!isAuth) {
     return <Redirect to={urlPage} />
+     //history.push('/admin')
   }
-
+   //<Redirect to="http://localhost:3000/admin" />
 
 
 
@@ -76,7 +86,7 @@ const LoginForm = () => {
   const verification = (a) => {
     if (!a) {
       return (
-        <div className={`container ${addclass}`} id="container">
+        <div className={`container ${addclass}`} id="container  "  >
           <div className="signin-signup" style={{ left: "25%" }}>
             <form onSubmit={sendEmail}>
               <h1>SIGN UP</h1>
@@ -97,9 +107,11 @@ const LoginForm = () => {
     } else {
       return (
         <div className={`container ${addclass}`} id="container">
-          <div class="signin-signup">
-            <div className="form-container sign-up-container">
-              <form onSubmit={sendEmail}>
+          
+          
+            <div className=" form-container ">
+            <div class="signin-signup">
+              <form onSubmit={sendEmail} action="#" class="sign-up-container">
                 <h1>SIGN UP</h1>
                 <input
                   type="text"
@@ -127,16 +139,20 @@ const LoginForm = () => {
                 />
                 <button type="submit">SIGN-UP</button>
               </form>
-            </div>
-            <div className=" form-container sign-in-container">
-              <form onSubmit={Submit}>
+              
+            
+            
+              
+              <form onSubmit={Submit} action="#" class="sign-in-container">
                 <h1>SIGN IN</h1>
-                <input type="text" placeholder="NAME" />
-                <input type="password" placeholder="PASSWORD" />
+               <input type="text" placeholder="EMAIL" value={user_email} onChange={(e)=>setEmail(e.target.value)}/>
+                <input type="password" placeholder="PASSWORD"value={passw} onChange={(e)=>setPassw(e.target.value)}/>
                 <button type="submit">LOGIN</button>
               </form>
-            </div>
-          </div>
+              </div>
+              </div>
+              
+             
           <div className="overlay-container">
             <div className="overlay-panel overlay-left">
               <button
@@ -157,7 +173,8 @@ const LoginForm = () => {
               </button>
             </div>
           </div>
-        </div>
+          </div>
+        
       );
     }
   };

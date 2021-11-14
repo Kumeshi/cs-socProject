@@ -2,7 +2,7 @@ import React  from 'react';
 import LoginForm from './components/LoginForm.js';
 import { BrowserRouter , Route,Switch } from 'react-router-dom';
 import adminPage from './components/adminPage.js';
-import axios from 'axios';
+
 import { render } from '@testing-library/react';
 
 
@@ -10,7 +10,7 @@ import { render } from '@testing-library/react';
 
 
 function App(){
-  //const [user] = useState('')
+ // const [user,setUser] = useState('')
   return (
     <BrowserRouter>
       <div className='App'>

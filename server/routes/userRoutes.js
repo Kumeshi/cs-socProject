@@ -7,7 +7,8 @@ const User = require('../models/userModel')
 userRoutes.post('/add', async (req, res) => {
   const user = new User(req.body)
 
-  const check = await User.findOne({ user_email: user.email })
+  const check = await User.findOne({ email: user.email })
+  console.log(user)
   if (check == null) {
     const salt = await bcrypt.genSalt(10)
     user.password = await bcrypt.hash(user.password, salt)
@@ -53,7 +54,7 @@ userRoutes.put('/update/:id',async(req,res)=>{
   const update =await User.findOneAndUpdate({ _id: req.params.id },
         { $set: req.body },
     )
-    res.send(update)
+    res.send(update?"success":"failed")
 });
 
 userRoutes.delete('/delete/:id',async(req,res)=>{
