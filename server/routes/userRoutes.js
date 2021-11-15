@@ -27,13 +27,16 @@ userRoutes.post('/add', async (req, res) => {
 
 userRoutes.get('/check/:email/:password', async (req, res) => {
   const findId = await User.findOne({
-    user_email: req.params.email,
+    email: req.params.email,
     //admin_password: req.params.password,
   })
+  //console.log(findId)
   const validPassword = await bcrypt.compare(
     req.params.password,
     findId.password
+    
   )
+  console.log(validPassword)
   if (validPassword) {
     res.send('done')
   } else {

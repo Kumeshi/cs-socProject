@@ -70,7 +70,7 @@ const LoginForm = () => {
     if (checkPass === 'done') {
       setIsAuth(false)
     } else {
-      window.alert('email and password did not match')
+      window.alert('Email and password did not match')
     }
   }
   if (!isAuth) {

@@ -17,7 +17,7 @@ function App(){
         <Switch>
           
            <Route path='/registration' component={LoginForm} />
-           <Route path='/admin' component={adminPage} /> 
+           <Route path='/admin123' component={adminPage} /> 
           </Switch>
       </div>
     </BrowserRouter>
